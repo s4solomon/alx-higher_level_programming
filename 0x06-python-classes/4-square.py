@@ -3,6 +3,7 @@
 Defines class Square
 """
 
+
 class square:
     """ Defines private attribute """
     def __init__(self, size=0):

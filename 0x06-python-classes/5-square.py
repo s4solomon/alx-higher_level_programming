@@ -3,6 +3,7 @@
 Defines class Square
 """
 
+
 class square:
     """ Defines private attribute """
     def __init__(self, size=0):
@@ -31,4 +32,4 @@ class square:
             print()
         else:
             for i in range(sel.size):
-            print("#" * self.area)
+                print("#" * self.area)
