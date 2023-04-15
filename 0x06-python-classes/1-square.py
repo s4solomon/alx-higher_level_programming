@@ -4,7 +4,7 @@ Defines an empty class Square with size attribute
 """
 
 
-class square:
+class Square:
     """ Defines Square class with private size attribute """
     def __init__(self, size):
         self.__size = size

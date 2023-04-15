@@ -4,7 +4,7 @@ Defines class Square
 """
 
 
-class square:
+class Square:
     """ Defines optional private size attribute """
     def __init__(self, size=0):
         if type(size) is not int:
