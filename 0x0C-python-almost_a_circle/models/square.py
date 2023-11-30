@@ -1,48 +1,68 @@
 #!/usr/bin/python3
-"""Module for class Square"""
+# square.py
+# Oscar Bedat <3961@holbertonschool.com>
+"""Define Square class"""
 from models.rectangle import Rectangle
 
 
 class Square(Rectangle):
-    """Inherits from square"""
+    """Square: Class define square
+    Args:
+        Rectangle (class): parent class
+    """
 
     def __init__(self, size, x=0, y=0, id=None):
-        """Overriding constructor from Rectangle"""
+        """
+        ...
+        """
         super().__init__(size, size, x, y, id)
 
     def __str__(self):
-        """String representation of a square"""
-        return '[Square] ({}) {}/{} - {}' \
-            .format(self.id, self.x, self.y, self.width)
+        """__str__ print information for square
+        Returns:
+            [str]: [Square] (<id>) <x>/<y> - <size>
+        """
+        return '[Square] ({:d}) {:d}/{:d} - {:d}'.format(
+            self.id, self.x, self.y, self.width
+        )
 
     @property
     def size(self):
-        """Get the value of size"""
+        """Getter value for size
+        """
         return self.width
 
     @size.setter
     def size(self, value):
-        """Set value to size"""
+        """Setter value for size
+        """
         self.width = value
         self.height = value
 
     def update(self, *args, **kwargs):
-        """Update the square with keyword-argument"""
-        attributes = ['id', 'size', 'x', 'y']
+        """update use args and kwargs
+        """
+        argc = len(args)
+        kwargc = len(kwargs)
+        modif_attrs = ['id', 'size', 'x', 'y']
 
-        for idx, x in enumerate(args):
-            if idx >= len(attributes):
-                return
+        if argc > 4:
+            argc = 4
 
-            self.__setattr__(attributes[idx], x)
-
-        if args:
-            return
-
-        for k, v in kwargs.items():
-            self.__setattr__(k, v)
+        if argc > 0:
+            for i in range(argc):
+                setattr(self, modif_attrs[i], args[i])
+        elif kwargc > 0:
+            for k, v in kwargs.items():
+                if k in modif_attrs:
+                    setattr(self, k, v)
 
     def to_dictionary(self):
-        """Return dictionary representation of a square"""
-        return {'id': self.id, 'size': self.size, 'x': self.x,
-                'y': self.y}
+        """Dictionary with values for rectangle
+        """
+        return {
+            'id': self.id,
+            'size': self.size,
+            'x': self.x,
+            'y': self.y
+        }

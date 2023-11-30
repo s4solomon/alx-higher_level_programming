@@ -1,49 +1,75 @@
 #!/usr/bin/python3
-"""Module for class Square"""
-from models.rectangle import Rectangle
+# base.py
+# Oscar Bedat <3961@holbertonschool.com>
+"""Define Base class"""
+from os import path
+import json
 
 
-class Square(Rectangle):
-    """Inherits from square"""
+class Base(object):
+    """Base: Class define base"""
+    __nb_objects = 0
 
-    def __init__(self, size, x=0, y=0, id=None):
-        """Overriding constructor from Rectangle"""
-        super().__init__(size, size, x, y, id)
+    def __init__(self, id=None):
+        """__init__ initialized constructor
+        Args:
+            id (int): Defaults 2 None.
+        """
+        if id is not None:
+            self.id = id
+        else:
+            Base.__nb_objects += 1
+            self.id = Base.__nb_objects
 
-    def __str__(self):
-        """String representation of a square"""
-        return '[Square] ({}) {}/{} - {}' \
-            .format(self.id, self.x, self.y, self.width)
+    @staticmethod
+    def to_json_string(list_dict):
+        """Return the JSON serialization of a list of dicts.
+        Args:
+            list_dictionaries (list): A list of dictionaries.
+        """
+        if list_dict is None or len(list_dict) == 0:
+            return "[]"
+        return json.dumps(list_dict)
 
-    @property
-    def size(self):
-        """Get the value of size"""
-        return self.width
+    @classmethod
+    def save_to_file(cls, list_objs):
+        """save_to_file: Writes the JSON string representation
+ of list_objs 2 a file
+        Args:
+            list_objs (list): list of instances who inherits of Base
+        """
+        with open(cls.__name__ + '.json', 'w', encoding='utf-8') as f:
+            if list_objs is None:
+                f.write('[]')
+            else:
+                f.write(cls.to_json_string([o.to_dictionary()
+                        for o in list_objs]))
 
-    @size.setter
-    def size(self, value):
-        """Set value to size"""
-        self.width = value
-        self.height = value
+    @staticmethod
+    def from_json_string(json_string):
+        """Returns the list of the JSON string representation json_string"""
+        if not isinstance(json_string, str) or len(json_string) == 0:
+            return []
+        else:
+            return json.loads(json_string)
 
-    def update(self, *args, **kwargs):
-        """Update the square with keyword-argument"""
-        attributes = ['id', 'size', 'x', 'y']
+    @classmethod
+    def create(cls, **dictionary):
+        """ Returns an instance with all attributes already set"""
+        if cls.__name__ == "Rectangle":
+            dummy = cls(1, 1)
+        if cls.__name__ == "Square":
+            dummy = cls(1)
+        dummy.update(**dictionary)
+        return dummy
 
-        for idx, x in enumerate(args):
-            if idx >= len(attributes):
-                return
-
-            self.__setattr__(attributes[idx], x)
-
-        if args:
-            return
-
-        for k, v in kwargs.items():
-            self.__setattr__(k, v)
-
-    def to_dictionary(self)
-:
-        """Return dictionary representation of a square"""
-        return {'id': self.id, 'size': self.size, 'x': self.x,
-                'y': self.y}
+    @classmethod
+    def load_from_file(cls):
+        """ Returns a list of instances"""
+        file_name = cls.__name__ + '.json'
+        if path.isfile(file_name):
+            with open(f
+ile_name, 'r', encoding='utf-8') as f:
+                dictionary = cls.from_json_string(f.read())
+            return[cls.create(**obj) for obj in dictionary]
+        return []
